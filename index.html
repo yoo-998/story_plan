@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>스토리 기획서</title>
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --point-blue: #2c5fb3;
+            --border-gray: #e2e8f0;
+            --label-bg: #f8fafc;
+            --text-black: #1e293b;
+        }
+
+        body {
+            font-family: 'Pretendard', -apple-system, sans-serif;
+            background-color: #f1f5f9;
+            margin: 0;
+            padding: 0;
+            color: var(--text-black);
+        }
+
+        .main-wrapper {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            background: #fff;
+            padding: 50px 40px;
+            border-radius: 2px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            box-sizing: border-box;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #1a1a1a;
+            gap: 20px;
+        }
+
+        .title-area { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .logo-box { font-weight: 900; color: #fff; background: #2c5fb3; padding: 2px 8px; border-radius: 2px; font-size: 14px; }
+        .main-title { font-size: 24px; font-weight: 800; letter-spacing: -1px; white-space: nowrap; }
+
+        .header-info { display: flex; gap: 25px; flex-grow: 1; justify-content: flex-end; }
+        .info-group { display: flex; align-items: center; gap: 10px; min-width: 180px; }
+        .info-group label { font-size: 14px; font-weight: 700; color: #444; white-space: nowrap; }
+        
+        [contenteditable="true"] {
+            outline: none;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            white-space: pre-wrap;
+            text-align: left;
+        }
+
+        .info-group [contenteditable="true"] {
+            border-bottom: 1px solid #cbd5e1;
+            flex-grow: 1;
+            padding: 4px 5px;
+            font-size: 15px;
+            min-height: 24px;
+        }
+
+        h2 {
+            font-size: 19px; font-weight: 800; margin: 35px 0 15px 0;
+            display: flex; align-items: center;
+        }
+        h2::before {
+            content: ""; width: 4px; height: 18px; background-color: #3b82f6; margin-right: 10px; border-radius: 2px;
+        }
+
+        .section-box {
+            border: 1px solid var(--border-gray); border-radius: 6px; margin-bottom: 15px;
+            background: #fff; overflow: hidden;
+        }
+        .box-label {
+            background-color: var(--label-bg); padding: 10px 15px;
+            font-size: 13px; font-weight: 700; color: #64748b; border-bottom: 1px solid var(--border-gray);
+        }
+
+        .input-body {
+            padding: 15px; min-height: 50px; font-size: 15px; line-height: 1.6;
+            width: 100%; box-sizing: border-box;
+        }
+
+        /* 기본 예시 글씨 스타일 */
+        [contenteditable="true"]:empty:before { content: attr(data-placeholder); color: #a1a1a1; }
+
+        /* [추가] 캡처 시 예시 글씨를 숨기는 설정 */
+        .is-capturing [contenteditable="true"]:empty:before { visibility: hidden; }
+
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+
+        .character-card {
+            border: 1px solid var(--border-gray); border-radius: 8px; padding: 15px;
+            margin-bottom: 12px; display: flex; gap: 12px; position: relative;
+        }
+        .char-col { display: flex; flex-direction: column; }
+        .char-label { font-size: 11px; font-weight: 700; color: #3b82f6; margin-bottom: 6px; }
+        .char-col .input-body { background: #f8fafc; border: 1px solid #f1f5f9; border-radius: 6px; padding: 10px; font-size: 14px; }
+
+        .add-btn {
+            width: 100%; padding: 12px; background: #fff; border: 1px dashed #cbd5e1;
+            border-radius: 8px; color: #94a3b8; font-weight: 600; cursor: pointer;
+        }
+
+        .delete-btn { position: absolute; top: 5px; right: 5px; border: none; background: none; color: #ef4444; cursor: pointer; font-size: 18px; }
+
+        .footer-text {
+            margin-top: 60px;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #94a3b8;
+            letter-spacing: 2px;
+            border-top: 1px solid #f1f5f9;
+            font-weight: 600;
+        }
+
+        .action-area {
+            width: 100%;
+            max-width: 850px;
+            margin-top: 30px;
+            margin-bottom: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .btn-save {
+            background: #1e293b; color: white; border: none; padding: 18px 60px;
+            border-radius: 50px; font-size: 17px; font-weight: 700; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+            transition: transform 0.2s;
+        }
+        .btn-save:active { transform: scale(0.98); }
+
+        #result-preview {
+            display: none; width: 100%; max-width: 850px; margin-top: 30px; padding: 20px; 
+            background: #fff; border-radius: 12px; text-align: center; box-sizing: border-box;
+        }
+        #result-preview img { width: 100%; border: 1px solid #ddd; border-radius: 8px; margin-top: 15px; }
+
+        @media (max-width: 600px) {
+            .container { padding: 30px 20px; }
+            header { flex-direction: column; align-items: flex-start; }
+            .header-info { width: 100%; flex-direction: column; gap: 10px; }
+            .info-group { width: 100%; }
+            .grid-2 { grid-template-columns: 1fr; }
+            .character-card { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-wrapper">
+    <div class="container" id="capture-area">
+        <header>
+            <div class="title-area">
+                <div class="logo-box">ABLE</div>
+                <div class="main-title">스토리 기획</div>
+            </div>
+            <div class="header-info">
+                <div class="info-group">
+                    <label>학교명</label>
+                    <div contenteditable="true" data-placeholder=""></div>
+                </div>
+                <div class="info-group">
+                    <label>학번 / 이름</label>
+                    <div contenteditable="true" data-placeholder=""></div>
+                </div>
+            </div>
+        </header>
+
+        <section>
+            <h2>1. 세계관 및 컨셉</h2>
+            <div class="section-box">
+                <div class="box-label">공간 및 시간적 배경</div>
+                <div class="input-body" contenteditable="true" data-placeholder="작품의 무대가 되는 세계를 설명해주세요."></div>
+            </div>
+            <div class="section-box">
+                <div class="box-label">장르 및 전체적인 톤</div>
+                <div class="input-body" contenteditable="true" data-placeholder="예: 판타지, 스릴러 / 몽환적이고 어두운 분위기"></div>
+            </div>
+        </section>
+
+        <section>
+            <h2>2. 줄거리 전개 구조</h2>
+            <div class="section-box">
+                <div class="box-label">기본 줄거리</div>
+                <div class="input-body" style="min-height: 120px;" contenteditable="true" data-placeholder="핵심 내용을 자유롭게 작성해 주세요."></div>
+            </div>
+            <div class="grid-2">
+                <div class="section-box">
+                    <div class="box-label">스토리 구조</div>
+                    <div class="input-body" contenteditable="true" data-placeholder="시작 → 갈등 → 전환점 → 결말"></div>
+                </div>
+                <div class="section-box">
+                    <div class="box-label">핵심 갈등</div>
+                    <div class="input-body" contenteditable="true" data-placeholder="주인공이 극복할 과제"></div>
+                </div>
+            </div>
+        </section>
+
+        <section id="char-section">
+            <h2>3. 캐릭터 설정</h2>
+            <div id="character-list">
+                <div class="character-card">
+                    <div class="char-col" style="flex: 1.5;">
+                        <div class="char-label">캐릭터 유형</div>
+                        <div class="input-body" contenteditable="true">주인공</div>
+                    </div>
+                    <div class="char-col" style="flex: 1.5;">
+                        <div class="char-label">이름</div>
+                        <div class="input-body" contenteditable="true" data-placeholder="이름"></div>
+                    </div>
+                    <div class="char-col" style="flex: 4;">
+                        <div class="char-label">목표 & 결핍</div>
+                        <div class="input-body" contenteditable="true" data-placeholder="내용 입력"></div>
+                    </div>
+                </div>
+            </div>
+            <button class="add-btn" id="add-btn-element" onclick="addCharacter()">+ 캐릭터 추가하기</button>
+        </section>
+
+        <section>
+            <h2>4. 타깃 및 매체 설정</h2>
+            <div class="grid-2">
+                <div class="section-box">
+                    <div class="box-label">주요 타깃층</div>
+                    <div class="input-body" contenteditable="true" data-placeholder="예: 어린이, 청소년, 성인 등"></div>
+                </div>
+                <div class="section-box">
+                    <div class="box-label">희망 매체</div>
+                    <div class="input-body" contenteditable="true" data-placeholder="예: 웹툰, 소설, 드라마 등"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="footer-text">스토리기획 | (주) 에이블</div>
+    </div>
+    <div class="action-area">
+        <button class="btn-save" onclick="saveToImage()">📷 이미지로 저장하기</button>
+        
+        <div id="result-preview">
+            <h3 style="color:#2c5fb3; margin-bottom:5px;">이미지가 생성되었습니다!</h3>
+            <p style="font-size:13px; color:#666; margin-bottom:15px;">이미지를 길게 눌러 <b>'사진 앱에 저장'</b> 하세요.</p>
+            <div id="image-holder"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addCharacter() {
+        const list = document.getElementById('character-list');
+        const div = document.createElement('div');
+        div.className = 'character-card';
+        div.innerHTML = `
+            <div class="char-col" style="flex: 1.5;"><div class="char-label">캐릭터 유형</div><div class="input-body" contenteditable="true" data-placeholder="유형"></div></div>
+            <div class="char-col" style="flex: 1.5;"><div class="char-label">이름</div><div class="input-body" contenteditable="true" data-placeholder="이름"></div></div>
+            <div class="char-col" style="flex: 4;"><div class="char-label">목표 & 결핍</div><div class="input-body" contenteditable="true" data-placeholder="내용"></div></div>
+            <button class="delete-btn" onclick="this.parentElement.remove()">✕</button>
+        `;
+        list.appendChild(div);
+    }
+
+    async function saveToImage() {
+        const area = document.getElementById('capture-area');
+        const addBtn = document.getElementById('add-btn-element');
+        const delBtns = document.querySelectorAll('.delete-btn');
+        const preview = document.getElementById('result-preview');
+        const holder = document.getElementById('image-holder');
+
+        // 1. 캡처 전: 불필요한 요소 숨기기 및 예시 문구 비활성화 클래스 추가
+        area.classList.add('is-capturing'); 
+        addBtn.style.visibility = 'hidden';
+        delBtns.forEach(b => b.style.visibility = 'hidden');
+
+        try {
+            const canvas = await html2canvas(area, {
+                scale: 2,
+                useCORS: true,
+                backgroundColor: "#ffffff",
+                logging: false,
+                scrollY: -window.scrollY,
+                windowWidth: area.scrollWidth,
+                windowHeight: area.scrollHeight
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+            holder.innerHTML = `<img src="${imgData}" />`;
+            preview.style.display = 'block';
+            preview.scrollIntoView({ behavior: 'smooth' });
+
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = '스토리_기획서.png';
+            link.click();
+        } catch (err) {
+            alert('이미지 생성 실패');
+        } finally {
+            // 2. 캡처 후: 다시 원래대로 복구
+            area.classList.remove('is-capturing');
+            addBtn.style.visibility = 'visible';
+            delBtns.forEach(b => b.style.visibility = 'visible');
+        }
+    }
+</script>
+
+</body>
+</html>
